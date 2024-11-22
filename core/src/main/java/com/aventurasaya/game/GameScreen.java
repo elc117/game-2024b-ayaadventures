@@ -4,18 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class GameScreen implements Screen {
 
     private final Main game;
     private OrthographicCamera camera;
     private SpriteBatch spriteBatch;
-    private ShapeRenderer shapeRenderer;
+    private Texture backGround, tHeart;
+    private Sprite heart;
+    private Player p;
 
-
-    private Texture backGround;
 
     public GameScreen(Main game) {
         this.game = game;
@@ -23,8 +23,11 @@ public class GameScreen implements Screen {
         this.camera = game.getCamera();
         this.spriteBatch = game.getSpriteBatch();
         this.backGround = new Texture("Game_Background.png");
-        this.shapeRenderer = new ShapeRenderer();
+        p = new Player(5);
 
+        tHeart = new Texture("heart.png");
+        heart = new Sprite(tHeart);
+        heart.setSize(heart.getWidth() /10f, heart.getHeight() / 10f);
     }
 
     @Override
@@ -37,27 +40,21 @@ public class GameScreen implements Screen {
         spriteBatch.setProjectionMatrix(camera.combined);
         game.getSpriteBatch().begin();
         game.getSpriteBatch().draw(backGround, 0, 0, Main.WORLD_WIDTH, Main.WORLD_HEIGHT);
+
+        for (int i = 0; i < p.getVidas(); i++) {
+            float xOffset = i * (heart.getWidth() + 10); // Espaçamento de 10 pixels entre os corações
+            heart.setPosition(Main.WORLD_WIDTH - 60 - xOffset, // Começa no canto superior direito
+                Main.WORLD_HEIGHT - heart.getHeight() - 40); // Y fixo no topo
+            heart.draw(game.getSpriteBatch());
+        }
+
         game.getSpriteBatch().end();
-
-        // Desenha a cor fixa com um espaço nas laterais
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-        // Define a cor (RGBA)
-        shapeRenderer.setColor(0.96f, 0.84f, 0.56f, 1f);
-
-        // Desenha o retângulo centralizado com espaços nas laterais
-        float espacoLaterais = 100; // Espaço das laterais
-        shapeRenderer.rect(espacoLaterais, 0, Main.WORLD_WIDTH - 2 * espacoLaterais, Main.WORLD_HEIGHT);
-
-        shapeRenderer.end();
     }
 
 
     @Override
     public void dispose() {
       backGround.dispose();
-      shapeRenderer.dispose();
     }
 
     @Override
