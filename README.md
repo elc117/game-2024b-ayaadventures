@@ -84,8 +84,8 @@ Spike, arrependido, liberta os gatinhos restantes e promete ser um protetor da c
     - Na Vila Belga, um puzzle de formas e cores para libertar um gatinho.
 3. **Confronto Final:**
     
-    O desafio final no esconderijo de Maximus é uma combinação de perguntas temáticas e um puzzle mais elaborado, com um tempo limite para completar.
+    O desafio final no esconderijo de Spike é uma combinação de perguntas temáticas e um puzzle mais elaborado, com um tempo limite para completar.
     
 4. **Recompensa:**
     
-    Ao resgatar todos os gatinhos, Aya recebe a gratidão deles, e Maximus se redime, prometendo nunca mais agir por ciúmes.
+    Ao resgatar todos os gatinhos, Aya recebe a gratidão deles, e Spike se redime, prometendo nunca mais agir por ciúmes.
