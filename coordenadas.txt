@@ -1,0 +1,7 @@
+spawn Aya: (WORLD_WIDHT - 825F, WORLD_HEIGHT - 365F)
+
+coordenadas auxiliares para deslocar:
+
+parada: (WORLD_WIDHT, -725f, WORLD_HEIGHT - 345f)
+
+point 1: (WOLRD_WIDHT - 635f, WORLD_HEIGHT - 335f)

@@ -19,11 +19,19 @@ public class GameScreen implements Screen {
     private Display display;
     private Sprite aya;
 
-    private float speed = 1000f;
+    private float speed = 500f;
     private boolean isMoving = false;
+    private boolean toParada = false; // Indicador de direção
+    private boolean toPoint1 = false;
+
+
     private Vector2 currentPosition;
     private Vector2 targetPosition;
     private Vector2 direction;
+
+    // Coordenadas dos pontos
+    private final Vector2 parada = new Vector2(Main.WORLD_WIDTH - 725f, Main.WORLD_HEIGHT - 345f);
+    private final Vector2 point1 = new Vector2(Main.WORLD_WIDTH - 635f, Main.WORLD_HEIGHT - 335f);
 
     public GameScreen(Main game) {
         this.game = game;
@@ -36,13 +44,12 @@ public class GameScreen implements Screen {
         tAya = new Texture("aya.png");
         aya = new Sprite(tAya);
         aya.setSize(aya.getWidth() / 5f, aya.getHeight() / 5f);
-        aya.setCenter(Main.WORLD_WIDTH - 1000f, Main.WORLD_HEIGHT - 200f);
+        aya.setCenter(Main.WORLD_WIDTH - 825f, Main.WORLD_HEIGHT - 365f);
         display = new Display(spriteBatch);
 
         currentPosition = new Vector2(aya.getX(), aya.getY()); // Posição inicial
         targetPosition = new Vector2(); // Ponto de destino (definido ao clicar)
         direction = new Vector2(); // Vetor de direção
-
     }
 
     @Override
@@ -54,38 +61,51 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
+
         spriteBatch.draw(backGround, 0, 0, Main.WORLD_WIDTH, Main.WORLD_HEIGHT);
         aya.draw(spriteBatch);
         display.desenhaVidas(p, spriteBatch);
 
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos); // Converte coordenadas da tela para o mundo
+            camera.unproject(touchPos);
 
-            targetPosition.set(touchPos.x, touchPos.y); // Define o destino
-            direction.set(targetPosition).sub(currentPosition).nor(); // Calcula direção normalizada
-            isMoving = true; // Inicia movimento
+            // Verifica se o clique foi no botão (point1)
+            if (touchPos.x >= point1.x - 30 && touchPos.x <= point1.x + 30 &&
+                touchPos.y >= point1.y - 30 && touchPos.y <= point1.y + 30) {
+                toParada = true; // Inicia o movimento para a parada
+                isMoving = true;
+                targetPosition.set(parada); // Configura o próximo destino
+                direction.set(targetPosition).sub(currentPosition).nor(); // Calcula direção
+            }
         }
 
         if (isMoving) {
             float distance = speed * delta; // Distância a mover neste frame
-            Vector2 moveStep = new Vector2(direction).scl(distance); // Movimento incremental
+            Vector2 moveStep = new Vector2(direction).scl(distance);
 
-            // Verificar se o próximo passo ultrapassa o destino
+            // Chega ao destino atual
             if (currentPosition.dst(targetPosition) <= distance) {
-                currentPosition.set(targetPosition); // Chegou ao destino
-                isMoving = false; // Para de se mover
-            } else {
-                currentPosition.add(moveStep); // Atualiza posição atual
-            }
+                currentPosition.set(targetPosition);
+                isMoving = false;
 
-            // Atualiza a posição do sprite Aya
+                // Se chegou na parada, vá para point1
+                if (toParada) {
+                    toParada = false;
+                    toPoint1 = true;
+                    isMoving = true;
+                    targetPosition.set(point1); // Próximo destino: point1
+                    direction.set(targetPosition).sub(currentPosition).nor();
+                } else if (toPoint1) {
+                    toPoint1 = false; // Chegou no point1, fim do movimento
+                }
+            } else {
+                currentPosition.add(moveStep);
+            }
+            // Atualiza posição da Aya
             aya.setPosition(currentPosition.x - aya.getWidth() / 2, currentPosition.y - aya.getHeight() / 2);
         }
-
         spriteBatch.end();
-
-
     }
 
 
