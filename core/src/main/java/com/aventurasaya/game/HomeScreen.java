@@ -12,19 +12,22 @@ import com.badlogic.gdx.math.Vector3;
 public class HomeScreen implements Screen {
 
     private final Main game;
-    private Texture backGround, tPlayButton;
+    private Texture backGround, tPlayButton, title;
     private Sprite playButton;
     private Sound clickSound;
 
     public HomeScreen(Main game) {
         this.game = game;
 
-        tPlayButton = new Texture("playButton.png");
+        tPlayButton = new Texture("start.png");
         playButton = new Sprite(tPlayButton);
         playButton.setSize(playButton.getWidth() /3f, playButton.getHeight()/ 3f);
         playButton.setCenter(Main.WORLD_WIDTH / 2f, Main.WORLD_HEIGHT / 3f);
 
-        backGround = new Texture("Game_Background.png");
+        backGround = new Texture("background.png");
+
+        title = new Texture("title.png");
+        
 
         clickSound = Gdx.audio.newSound(Gdx.files.internal("meow.ogg"));
 
@@ -43,6 +46,15 @@ public class HomeScreen implements Screen {
         checkButtonPress();
 
         game.getSpriteBatch().draw(backGround, 0, 0, Main.WORLD_WIDTH, Main.WORLD_HEIGHT);
+        // Define o tamanho e a posição do título
+        float titleWidth = title.getWidth() * 0.8f;  // Reduz para 50% da largura
+        float titleHeight = title.getHeight() * 0.8f; // Reduz para 50% da altura
+        float titleX = (Main.WORLD_WIDTH - titleWidth) / 2; // Centraliza no eixo X
+        float titleY = Main.WORLD_HEIGHT * 0.5f; // Define a posição no eixo Y
+
+        // Desenha o título redimensionado e posicionado
+        game.getSpriteBatch().draw(title, titleX, titleY, titleWidth, titleHeight);
+        
         playButton.draw(game.getSpriteBatch());
 
         game.getSpriteBatch().end();
@@ -83,6 +95,7 @@ public class HomeScreen implements Screen {
     @Override
     public void dispose() {
         backGround.dispose();
+        title.dispose();
         tPlayButton.dispose();
     }
 }
