@@ -19,6 +19,10 @@ public class GameScreen implements Screen {
     private Display display;
     private Sprite aya;
 
+    // Botão "X"
+    private Texture backButtonT;
+    private float backButtonX, backButtonY, backButtonWidth, backButtonHeight;
+
     private float speed = 500f;
     private boolean isMoving = false;
     private boolean toParada = false; // Indicador de direção
@@ -54,7 +58,14 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        // Carregue a textura do botão
+        backButtonT = new Texture("x.png");
 
+        // Defina as dimensões e a posição do botão
+        backButtonWidth = 40; // Largura do botão
+        backButtonHeight = 30; // Altura do botão
+        backButtonX = 10;// Margem da direita
+        backButtonY = Main.WORLD_HEIGHT - backButtonHeight - 10; // Margem do topo
     }
 
     @Override
@@ -66,9 +77,17 @@ public class GameScreen implements Screen {
         aya.draw(spriteBatch);
         display.desenhaVidas(p, spriteBatch);
 
+          // Desenhe o botão "X"
+        spriteBatch.draw(backButtonT, backButtonX, backButtonY, backButtonWidth, backButtonHeight);
+
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
+
+            // Verifica se o clique foi no botão "x"
+            if (touchPos.x >= backButtonX && touchPos.x <= backButtonX + backButtonWidth && touchPos.y >= backButtonY && touchPos.y <= backButtonY + backButtonHeight){
+                game.setScreen(new HomeScreen(game)); // Retorna para o menu inicial
+            }
 
             // Verifica se o clique foi no botão (point1)
             if (touchPos.x >= point1.x - 30 && touchPos.x <= point1.x + 30 &&
@@ -111,7 +130,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-      backGround.dispose();
+        backGround.dispose();
+        backButtonT.dispose(); // Libera a textura do botão
+        tAya.dispose(); // Libera a textura da Aya
     }
 
     @Override
