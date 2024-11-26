@@ -1,4 +1,4 @@
-spawn Aya: (WORLD_WIDHT - 825F, WORLD_HEIGHT - 365F)
+spawn Aya: (WORLD_WIDHT - 1195F, WORLD_HEIGHT - 449F)
 
 coordenadas auxiliares para deslocar:
 
