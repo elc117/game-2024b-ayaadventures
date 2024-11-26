@@ -48,7 +48,7 @@ public class GameScreen implements Screen {
         tAya = new Texture("aya.png");
         aya = new Sprite(tAya);
         aya.setSize(aya.getWidth() / 5f, aya.getHeight() / 5f);
-        aya.setCenter(Main.WORLD_WIDTH - 825f, Main.WORLD_HEIGHT - 365f);
+        aya.setCenter(Main.WORLD_WIDTH - 1195f, Main.WORLD_HEIGHT - 449f);
         display = new Display(spriteBatch);
 
         currentPosition = new Vector2(aya.getX(), aya.getY()); // Posição inicial
