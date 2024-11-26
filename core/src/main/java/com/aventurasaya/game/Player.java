@@ -1,9 +1,7 @@
 package com.aventurasaya.game;
 
 public class Player {
-
     private int vidas;
-
 
     public Player (int vidas) {
         this.vidas = vidas;

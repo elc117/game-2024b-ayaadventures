@@ -1,7 +1,15 @@
-spawn Aya: (WORLD_WIDHT - 1195F, WORLD_HEIGHT - 449F)
+spawn Aya: (Main.WORLD_WIDHT - 1195f, Main.WORLD_HEIGHT - 449f)
 
-coordenadas auxiliares para deslocar:
+primeira esquina: (Main.WORLD_WIDTH - 1015f, Main.WORLD_HEIGHT - 449f)
 
-parada: (WORLD_WIDHT, -725f, WORLD_HEIGHT - 345f)
+segunda esquina: (Main.WORLD_WIDTH - 1015f, Main.WORLD_HEIGHT - 320f)
 
-point 1: (WOLRD_WIDHT - 635f, WORLD_HEIGHT - 335f)
+terceira esquina: (Main.WORLD_WIDTH - 775f, Main.WORLD_HEIGHT - 320f)
+
+quarta esquina: (Main.WORLD_WIDTH - 770f, Main.WORLD_HEIGHT - 160f)
+
+quinta esquina: (Main.WORLD_WIDTH - 530f, Main.WORLD_HEIGHT - 160f)
+
+sexta esquina: (Main.WORLD_WIDTH - 530f, Main.WORLD_HEIGHT - 449f)
+
+ultimo point: (Main.WORLD_WIDTH - 360f, Main.WORLD_HEIGHT - 449f)
