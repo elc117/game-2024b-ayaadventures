@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+
 public class GameScreen implements Screen {
 
     private final Main game;
@@ -28,14 +29,7 @@ public class GameScreen implements Screen {
     private boolean toParada = false; // Indicador de direção
     private boolean toPoint1 = false;
 
-
-    private Vector2 currentPosition;
-    private Vector2 targetPosition;
-    private Vector2 direction;
-
-    // Coordenadas dos pontos
-    private final Vector2 parada = new Vector2(Main.WORLD_WIDTH - 725f, Main.WORLD_HEIGHT - 345f);
-    private final Vector2 point1 = new Vector2(Main.WORLD_WIDTH - 635f, Main.WORLD_HEIGHT - 335f);
+    private MovePlayer movePlayer;
 
     public GameScreen(Main game) {
         this.game = game;
@@ -49,11 +43,10 @@ public class GameScreen implements Screen {
         aya = new Sprite(tAya);
         aya.setSize(aya.getWidth() / 5f, aya.getHeight() / 5f);
         aya.setCenter(Main.WORLD_WIDTH - 1195f, Main.WORLD_HEIGHT - 449f);
+        movePlayer = new MovePlayer(aya);
         display = new Display(spriteBatch);
 
-        currentPosition = new Vector2(aya.getX(), aya.getY()); // Posição inicial
-        targetPosition = new Vector2(); // Ponto de destino (definido ao clicar)
-        direction = new Vector2(); // Vetor de direção
+
     }
 
     @Override
@@ -66,6 +59,8 @@ public class GameScreen implements Screen {
         backButtonHeight = 30; // Altura do botão
         backButtonX = 10;// Margem da direita
         backButtonY = Main.WORLD_HEIGHT - backButtonHeight - 10; // Margem do topo
+
+
     }
 
     @Override
@@ -77,54 +72,38 @@ public class GameScreen implements Screen {
         aya.draw(spriteBatch);
         display.desenhaVidas(p, spriteBatch);
 
-          // Desenhe o botão "X"
+        // Desenhe o botão "X"
         spriteBatch.draw(backButtonT, backButtonX, backButtonY, backButtonWidth, backButtonHeight);
+
+        movePlayer.update(delta);
+
 
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
 
-            // Verifica se o clique foi no botão "x"
-            if (touchPos.x >= backButtonX && touchPos.x <= backButtonX + backButtonWidth && touchPos.y >= backButtonY && touchPos.y <= backButtonY + backButtonHeight){
-                game.setScreen(new HomeScreen(game)); // Retorna para o menu inicial
-            }
-
-            // Verifica se o clique foi no botão (point1)
-            if (touchPos.x >= point1.x - 30 && touchPos.x <= point1.x + 30 &&
-                touchPos.y >= point1.y - 30 && touchPos.y <= point1.y + 30) {
-                toParada = true; // Inicia o movimento para a parada
-                isMoving = true;
-                targetPosition.set(parada); // Configura o próximo destino
-                direction.set(targetPosition).sub(currentPosition).nor(); // Calcula direção
+            if (isPointClicked(touchPos, movePlayer.getEsquina2()) && movePlayer.isAtSpawn()) {
+                // Mover para esquina1 e depois esquina2
+                movePlayer.moveTo(movePlayer.getEsquina1(), movePlayer.getEsquina2());
+            } else if (isPointClicked(touchPos, movePlayer.getEsquina3()) && movePlayer.isAtEsquina2()) {
+                movePlayer.moveToEsquina3();
+            } else if (isPointClicked(touchPos, movePlayer.getEsquina5()) && movePlayer.isAtEsquina3()) {
+                // Mover para esquina4 antes de esquina5
+                movePlayer.moveTo(movePlayer.getEsquina4(), movePlayer.getEsquina5());
+            } else if (isPointClicked(touchPos, movePlayer.getEsquina6()) && movePlayer.isAtEsquina5()) {
+                movePlayer.moveToEsquina6();
+            } else if (isPointClicked(touchPos, movePlayer.getPontoFinal()) && movePlayer.isAtEsquina6()) {
+                movePlayer.moveToPontoFinal();
             }
         }
 
-        if (isMoving) {
-            float distance = speed * delta; // Distância a mover neste frame
-            Vector2 moveStep = new Vector2(direction).scl(distance);
-
-            // Chega ao destino atual
-            if (currentPosition.dst(targetPosition) <= distance) {
-                currentPosition.set(targetPosition);
-                isMoving = false;
-
-                // Se chegou na parada, vá para point1
-                if (toParada) {
-                    toParada = false;
-                    toPoint1 = true;
-                    isMoving = true;
-                    targetPosition.set(point1); // Próximo destino: point1
-                    direction.set(targetPosition).sub(currentPosition).nor();
-                } else if (toPoint1) {
-                    toPoint1 = false; // Chegou no point1, fim do movimento
-                }
-            } else {
-                currentPosition.add(moveStep);
-            }
-            // Atualiza posição da Aya
-            aya.setPosition(currentPosition.x - aya.getWidth() / 2, currentPosition.y - aya.getHeight() / 2);
-        }
         spriteBatch.end();
+    }
+
+    private boolean isPointClicked(Vector3 touchPos, Vector2 point) {
+        float tolerance = 30f; // Margem de clique
+        return touchPos.x >= point.x - tolerance && touchPos.x <= point.x + tolerance &&
+            touchPos.y >= point.y - tolerance && touchPos.y <= point.y + tolerance;
     }
 
 
