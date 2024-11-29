@@ -19,6 +19,7 @@ public class GameScreen implements Screen {
     private Player p;
     private Display display;
     private Sprite aya;
+    private boolean shouldSwitchToQuizScreen = false;
 
     // Botão "X"
     private Texture backButtonT;
@@ -77,6 +78,10 @@ public class GameScreen implements Screen {
 
         movePlayer.update(delta);
 
+        if (shouldSwitchToQuizScreen && movePlayer.isAtEsquina2()) {
+            game.setScreen(new QuizScreen(1, game, p));
+        }
+
 
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -85,6 +90,7 @@ public class GameScreen implements Screen {
             if (isPointClicked(touchPos, movePlayer.getEsquina2()) && movePlayer.isAtSpawn()) {
                 // Mover para esquina1 e depois esquina2
                 movePlayer.moveTo(movePlayer.getEsquina1(), movePlayer.getEsquina2());
+                shouldSwitchToQuizScreen = true;
             } else if (isPointClicked(touchPos, movePlayer.getEsquina3()) && movePlayer.isAtEsquina2()) {
                 movePlayer.moveToEsquina3();
             } else if (isPointClicked(touchPos, movePlayer.getEsquina5()) && movePlayer.isAtEsquina3()) {
