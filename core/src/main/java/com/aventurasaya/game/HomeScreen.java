@@ -22,15 +22,18 @@ public class HomeScreen implements Screen {
         tPlayButton = new Texture("start.png");
         playButton = new Sprite(tPlayButton);
         playButton.setSize(playButton.getWidth() /3f, playButton.getHeight()/ 3f);
-        playButton.setCenter(Main.WORLD_WIDTH / 2f, Main.WORLD_HEIGHT / 3f);
+
+        float buttonX = (game.getCamera().viewportWidth - playButton.getWidth()) / 2;
+        float buttonY = game.getCamera().viewportHeight / 3f;
+
+
+        playButton.setPosition(buttonX, buttonY);
 
         backGround = new Texture("background.png");
 
         title = new Texture("title.png");
-        
 
         clickSound = Gdx.audio.newSound(Gdx.files.internal("meow.ogg"));
-
     }
 
 
@@ -41,30 +44,33 @@ public class HomeScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        game.getFitViewport().apply();
+        game.getCamera().update();
+        game.getSpriteBatch().setProjectionMatrix(game.getCamera().combined);
+
         game.getSpriteBatch().begin();
 
-        checkButtonPress();
+        game.getSpriteBatch().draw(backGround, 0, 0, game.getCamera().viewportWidth, game.getCamera().viewportHeight);
 
-        game.getSpriteBatch().draw(backGround, 0, 0, Main.WORLD_WIDTH, Main.WORLD_HEIGHT);
         // Define o tamanho e a posição do título
-        float titleWidth = title.getWidth() * 0.8f;  // Reduz para 50% da largura
-        float titleHeight = title.getHeight() * 0.8f; // Reduz para 50% da altura
-        float titleX = (Main.WORLD_WIDTH - titleWidth) / 2; // Centraliza no eixo X
-        float titleY = Main.WORLD_HEIGHT * 0.5f; // Define a posição no eixo Y
+        float titleWidth = title.getWidth() * 0.8f;  // Reduzir para 80% da largura original
+        float titleHeight = title.getHeight() * 0.8f; // Reduzir para 80% da altura original
+        float titleX = (game.getCamera().viewportWidth - titleWidth) / 2; // Centraliza no eixo X
+        float titleY = game.getCamera().viewportHeight * 0.5f; // Define a posição no eixo Y
 
-        // Desenha o título redimensionado e posicionado
+
         game.getSpriteBatch().draw(title, titleX, titleY, titleWidth, titleHeight);
-        
         playButton.draw(game.getSpriteBatch());
 
         game.getSpriteBatch().end();
+
+        checkButtonPress();
     }
 
     void checkButtonPress() {
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            game.getCamera().unproject(touchPos);
-
+            game.getFitViewport().unproject(touchPos);
             if (playButton.getBoundingRectangle().contains(touchPos.x, touchPos.y)) {
                 clickSound.play();
                 game.setScreen(new GameScreen(game));
@@ -74,7 +80,7 @@ public class HomeScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        // Resize your screen here. The parameters represent the new window size.
+        game.getFitViewport().update(width, height, true);
     }
 
     @Override

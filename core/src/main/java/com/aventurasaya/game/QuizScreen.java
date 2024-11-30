@@ -3,18 +3,18 @@ package com.aventurasaya.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-
-
-
 import java.util.ArrayList;
+import com.badlogic.gdx.files.FileHandle;
+
 
 
 public class QuizScreen implements Screen {
+
     private Texture backGroundFase;
     private int fase;
     private Main game;
@@ -24,8 +24,7 @@ public class QuizScreen implements Screen {
     private BitmapFont font;
     private Display d;
     private Player p;
-
-
+    private Vector2 touchPos;
 
     public QuizScreen (int fase, Main game, Player p) {
         this.fase = fase;
@@ -35,64 +34,57 @@ public class QuizScreen implements Screen {
         font = new BitmapFont();
         font.getData().setScale(2);
         d = new Display(game.getSpriteBatch());
+        touchPos = new Vector2();
         lerFasesJson(fase);
     }
 
     private void lerFasesJson(int fase) {
         FileHandle file = Gdx.files.internal("fases.json");
         String jsonString = file.readString();
-
-        JsonValue raiz = new JsonReader().parse(jsonString); // Parseia o JSON para um JsonValue
-
-        JsonValue fasesArray = raiz.get("fases"); // Obtém o array de fases
+        JsonValue raiz = new JsonReader().parse(jsonString);
+        JsonValue fasesArray = raiz.get("fases");
 
         for (JsonValue faseObj : fasesArray) {
             if (faseObj.getInt("numero") == fase) {
-                // Atualiza os atributos com os dados da fase
                 pergunta = faseObj.getString("pergunta");
                 alternativas = new ArrayList<>();
-
                 for (JsonValue alternativa : faseObj.get("alternativas")) {
                     alternativas.add(alternativa.asString());
                 }
-
                 resposta = faseObj.getInt("resposta");
-
                 break;
             }
         }
     }
 
+    private int verificaAlternativa(Vector2 touchPos) {
+        float xInicio = game.getCamera().viewportWidth / 2f;
+        float yInicio = game.getCamera().viewportHeight / 1.5f;
+        float larguraAlternativa = 200; // Largura hipotética de cada alternativa
+        float alturaAlternativa = 20;  // Altura hipotética de cada alternativa
+        float espacoEntreAlternativas = 100; // Espaço entre as alternativas
 
-    private int verificaAlternativa(int x, int y) {
-        int margemDeFolga = 20;     // Definindo a margem de folga ao redor da alternativa
-
-        // Calculando a altura e a posição Y de cada alternativa com base no índice
         for (int i = 0; i < alternativas.size(); i++) {
-            int yPosition = 500 - (i * 100) - 10;
+            float yAtual = yInicio - (i * espacoEntreAlternativas);
 
-            GlyphLayout layout = new GlyphLayout(font, alternativas.get(i));
-            float alternativaWidth = layout.width;
-
-            if (x >= 600 && x <= 600 + alternativaWidth
-                && y >= yPosition - margemDeFolga && y <= yPosition + margemDeFolga) {
-                return i + 1;  // Retorna o número da alternativa (começando de 1)
+            if (touchPos.x >= xInicio && touchPos.x <= xInicio + larguraAlternativa &&
+                touchPos.y >= yAtual - alturaAlternativa && touchPos.y <= yAtual) {
+                return i + 1;
             }
         }
-        // Se o clique não foi em nenhuma alternativa, retorna 0
-        return 0;
+        return 0; // Nenhuma alternativa foi clicada
     }
 
 
     @Override
-    public void show() {
-
-    }
+    public void show() {}
 
     @Override
     public void render(float delta) {
+        game.getFitViewport().apply();
         game.getSpriteBatch().begin();
-        game.getSpriteBatch().draw(backGroundFase, 0, 0, Main.WORLD_WIDTH, Main.WORLD_HEIGHT);
+        game.getSpriteBatch().draw(backGroundFase, 0, 0, game.getCamera().viewportWidth, game.getCamera().viewportHeight);
+
         d.desenhaVidas(p, game.getSpriteBatch());
 
         if (pergunta != null) {
@@ -101,46 +93,40 @@ public class QuizScreen implements Screen {
 
         for (int i = 0; i < alternativas.size(); i++) {
             String alternativa = alternativas.get(i);
-            font.draw(game.getSpriteBatch(), alternativa, 600, 500 - (i * 100));
-
+            font.draw(game.getSpriteBatch(), alternativa, game.getCamera().viewportWidth / 2f, game.getCamera().viewportHeight / 1.5f - (i * 100));
         }
 
         if(Gdx.input.justTouched()) {
-            int clickX = Gdx.input.getX();
-            int clickY = Gdx.graphics.getHeight() - Gdx.input.getY();
+            touchPos.set(Gdx.input.getX(), Gdx.input.getY());
+            game.getFitViewport().unproject(touchPos);
 
-            int respotaEscolhida = verificaAlternativa(clickX, clickY);
-            if (respotaEscolhida != resposta && respotaEscolhida != 0) {
+            int respostaEscolhida = verificaAlternativa(touchPos);
+            if (respostaEscolhida != resposta && respostaEscolhida != 0) {
                 p.perdeVida();
-            } else if (respotaEscolhida == resposta) {
-                // volta para tela do jogo atualizada (pensar em como fazer ainda)
+            } else if (respostaEscolhida == resposta) {
+                // Ação para avançar para a próxima tela ou fase
             }
         }
+
         game.getSpriteBatch().end();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        game.getFitViewport().update(width, height, true);
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {
-
+        backGroundFase.dispose();
     }
 }

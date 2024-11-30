@@ -25,12 +25,7 @@ public class GameScreen implements Screen {
     private Texture backButtonT;
     private float backButtonX, backButtonY, backButtonWidth, backButtonHeight;
 
-    private float speed = 500f;
-    private boolean isMoving = false;
-    private boolean toParada = false; // Indicador de direção
-    private boolean toPoint1 = false;
-
-    private MovePlayer movePlayer;
+        private MovePlayer movePlayer;
 
     public GameScreen(Main game) {
         this.game = game;
@@ -43,8 +38,15 @@ public class GameScreen implements Screen {
         tAya = new Texture("aya.png");
         aya = new Sprite(tAya);
         aya.setSize(aya.getWidth() / 5f, aya.getHeight() / 5f);
-        aya.setCenter(Main.WORLD_WIDTH - 1195f, Main.WORLD_HEIGHT - 449f);
-        movePlayer = new MovePlayer(aya);
+
+        float x = Main.WORLD_WIDTH - 1195f;
+        float y = Main.WORLD_HEIGHT - 449f;
+
+
+        Vector3 worldCoords = game.getCamera().project(new Vector3(x, y, 0));
+        aya.setPosition(worldCoords.x, worldCoords.y);
+
+        movePlayer = new MovePlayer(aya, game);
         display = new Display(spriteBatch);
 
 
@@ -66,10 +68,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        game.getFitViewport().apply();
         spriteBatch.setProjectionMatrix(camera.combined);
+
         spriteBatch.begin();
 
-        spriteBatch.draw(backGround, 0, 0, Main.WORLD_WIDTH, Main.WORLD_HEIGHT);
+        spriteBatch.draw(backGround, 0, 0, game.getCamera().viewportWidth, game.getCamera().viewportHeight);
         aya.draw(spriteBatch);
         display.desenhaVidas(p, spriteBatch);
 
@@ -85,7 +89,7 @@ public class GameScreen implements Screen {
 
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
+            game.getFitViewport().unproject(touchPos);
 
             if (isPointClicked(touchPos, movePlayer.getEsquina2()) && movePlayer.isAtSpawn()) {
                 // Mover para esquina1 e depois esquina2
@@ -122,7 +126,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        camera.setToOrtho(false, Main.WORLD_WIDTH, Main.WORLD_HEIGHT);
+        game.getFitViewport().update(width, height, true);
     }
 
     @Override

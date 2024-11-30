@@ -8,7 +8,7 @@ public class Display {
 
     private Texture tHeart;
     private Sprite heart;
-
+    
 
     public Display(SpriteBatch spriteBatch) {
         tHeart = new Texture("heart.png");

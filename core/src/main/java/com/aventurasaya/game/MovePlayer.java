@@ -1,5 +1,6 @@
 package com.aventurasaya.game;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
@@ -15,17 +16,22 @@ public class MovePlayer {
     private boolean isMoving;
     private Queue<Vector2> destinations; // Fila de destinos
 
-    public MovePlayer(Sprite aya) {
+
+
+    public MovePlayer(Sprite aya, Main game) {
         this.aya = aya;
 
-        spawnAya = new Vector2(Main.WORLD_WIDTH - 1195f, Main.WORLD_HEIGHT - 449f);
-        esquina1 = new Vector2(Main.WORLD_WIDTH - 1015f, Main.WORLD_HEIGHT - 449f);
-        esquina2 = new Vector2(Main.WORLD_WIDTH - 1015f, Main.WORLD_HEIGHT - 320f);
-        esquina3 = new Vector2(Main.WORLD_WIDTH - 775f, Main.WORLD_HEIGHT - 320f);
-        esquina4 = new Vector2(Main.WORLD_WIDTH - 770f, Main.WORLD_HEIGHT - 160f);
-        esquina5 = new Vector2(Main.WORLD_WIDTH - 530f, Main.WORLD_HEIGHT - 160f);
-        esquina6 = new Vector2(Main.WORLD_WIDTH - 530f, Main.WORLD_HEIGHT - 449f);
-        pontoFinal = new Vector2(Main.WORLD_WIDTH - 360f, Main.WORLD_HEIGHT - 449f);
+        float worldWidth = game.getFitViewport().getCamera().viewportWidth;
+        float worldHeight = game.getFitViewport().getCamera().viewportHeight;
+
+        spawnAya = new Vector2(worldWidth - 1195f, worldHeight - 449f);
+        esquina1 = new Vector2(worldWidth - 1015f, worldHeight - 449f);
+        esquina2 = new Vector2(worldWidth - 1015f, worldHeight - 320f);
+        esquina3 = new Vector2(worldWidth - 775f, worldHeight - 320f);
+        esquina4 = new Vector2(worldWidth - 770f, worldHeight - 160f);
+        esquina5 = new Vector2(worldWidth - 530f, worldHeight - 160f);
+        esquina6 = new Vector2(worldWidth - 530f, worldHeight - 449f);
+        pontoFinal = new Vector2(worldWidth - 360f, worldHeight - 449f);
 
         currentPosition = new Vector2(spawnAya);
         targetPosition = new Vector2();
@@ -68,7 +74,6 @@ public class MovePlayer {
             } else {
                 currentPosition.add(moveStep);
             }
-
             aya.setPosition(currentPosition.x - aya.getWidth() / 2, currentPosition.y - aya.getHeight() / 2);
         }
     }
@@ -132,7 +137,6 @@ public class MovePlayer {
     }
 
     public boolean isAtSpawn() {
-        // Tolerância para evitar erros por valores float
         float tolerance = 1f;
         return currentPosition.epsilonEquals(spawnAya, tolerance);
     }
