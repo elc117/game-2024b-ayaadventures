@@ -55,11 +55,11 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         // Carregue a textura do botão
-        backButtonT = new Texture("x.png");
+        backButtonT = new Texture("back.png");
 
         // Defina as dimensões e a posição do botão
-        backButtonWidth = 40; // Largura do botão
-        backButtonHeight = 30; // Altura do botão
+        backButtonWidth = 50; // Largura do botão
+        backButtonHeight = 40; // Altura do botão
         backButtonX = 10;// Margem da direita
         backButtonY = Main.WORLD_HEIGHT - backButtonHeight - 10; // Margem do topo
 

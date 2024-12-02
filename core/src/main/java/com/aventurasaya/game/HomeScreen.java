@@ -12,16 +12,16 @@ import com.badlogic.gdx.math.Vector3;
 public class HomeScreen implements Screen {
 
     private final Main game;
-    private Texture backGround, tPlayButton, title;
+    private Texture backGround, tPlayButton;
     private Sprite playButton;
     private Sound clickSound;
 
     public HomeScreen(Main game) {
         this.game = game;
 
-        tPlayButton = new Texture("start.png");
+        tPlayButton = new Texture("play.png");
         playButton = new Sprite(tPlayButton);
-        playButton.setSize(playButton.getWidth() /3f, playButton.getHeight()/ 3f);
+        playButton.setSize(playButton.getWidth() /8f, playButton.getHeight()/ 8f);
 
         float buttonX = (game.getCamera().viewportWidth - playButton.getWidth()) / 2;
         float buttonY = game.getCamera().viewportHeight / 3f;
@@ -29,9 +29,7 @@ public class HomeScreen implements Screen {
 
         playButton.setPosition(buttonX, buttonY);
 
-        backGround = new Texture("background.png");
-
-        title = new Texture("title.png");
+        backGround = new Texture("inicial.gif");
 
         clickSound = Gdx.audio.newSound(Gdx.files.internal("meow.ogg"));
     }
@@ -52,14 +50,6 @@ public class HomeScreen implements Screen {
 
         game.getSpriteBatch().draw(backGround, 0, 0, game.getCamera().viewportWidth, game.getCamera().viewportHeight);
 
-        // Define o tamanho e a posição do título
-        float titleWidth = title.getWidth() * 0.8f;  // Reduzir para 80% da largura original
-        float titleHeight = title.getHeight() * 0.8f; // Reduzir para 80% da altura original
-        float titleX = (game.getCamera().viewportWidth - titleWidth) / 2; // Centraliza no eixo X
-        float titleY = game.getCamera().viewportHeight * 0.5f; // Define a posição no eixo Y
-
-
-        game.getSpriteBatch().draw(title, titleX, titleY, titleWidth, titleHeight);
         playButton.draw(game.getSpriteBatch());
 
         game.getSpriteBatch().end();
@@ -101,7 +91,6 @@ public class HomeScreen implements Screen {
     @Override
     public void dispose() {
         backGround.dispose();
-        title.dispose();
         tPlayButton.dispose();
     }
 }
