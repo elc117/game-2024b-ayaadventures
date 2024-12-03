@@ -14,24 +14,28 @@ public class HomeScreen implements Screen {
     private final Main game;
     private Texture backGround, tPlayButton;
     private Sprite playButton;
-    private Sound clickSound;
+    private Sound clickSound, buttonhover;
+    private boolean hoverSoundPlayed = false;
+
 
     public HomeScreen(Main game) {
         this.game = game;
 
         tPlayButton = new Texture("play.png");
         playButton = new Sprite(tPlayButton);
-        playButton.setSize(playButton.getWidth() /8f, playButton.getHeight()/ 8f);
+        playButton.setSize(playButton.getWidth() / 2.5f, playButton.getHeight()/ 2.5f);
 
         float buttonX = (game.getCamera().viewportWidth - playButton.getWidth()) / 2;
-        float buttonY = game.getCamera().viewportHeight / 3f;
+        float buttonY = game.getCamera().viewportHeight / 3.5f;
 
 
         playButton.setPosition(buttonX, buttonY);
 
-        backGround = new Texture("inicial.gif");
+        backGround = new Texture("background.png");
 
         clickSound = Gdx.audio.newSound(Gdx.files.internal("meow.ogg"));
+        buttonhover = Gdx.audio.newSound(Gdx.files.internal("button hover.mp3"));
+
     }
 
 
@@ -53,6 +57,18 @@ public class HomeScreen implements Screen {
         playButton.draw(game.getSpriteBatch());
 
         game.getSpriteBatch().end();
+
+        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        game.getFitViewport().unproject(mousePos);
+
+        if (playButton.getBoundingRectangle().contains(mousePos.x, mousePos.y)) {
+            if (!hoverSoundPlayed) {
+                buttonhover.play();
+                hoverSoundPlayed = true;
+            }
+        } else {
+            hoverSoundPlayed = false;
+        }
 
         checkButtonPress();
     }
