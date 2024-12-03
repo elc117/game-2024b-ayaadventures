@@ -79,7 +79,7 @@ public class HomeScreen implements Screen {
             game.getFitViewport().unproject(touchPos);
             if (playButton.getBoundingRectangle().contains(touchPos.x, touchPos.y)) {
                 clickSound.play();
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new StoryScreen(game));
             }
         }
     }
