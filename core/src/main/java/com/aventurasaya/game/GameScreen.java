@@ -25,9 +25,9 @@ public class GameScreen implements Screen {
     private Texture backButtonT;
     private float backButtonX, backButtonY, backButtonWidth, backButtonHeight;
 
-        private MovePlayer movePlayer;
+    private MovePlayer movePlayer;
 
-        
+
 
     public GameScreen(Main game) {
         this.game = game;
@@ -41,14 +41,15 @@ public class GameScreen implements Screen {
         aya = new Sprite(tAya);
         aya.setSize(aya.getWidth() / 5f, aya.getHeight() / 5f);
 
-        float x = Main.WORLD_WIDTH - 1195f;
-        float y = Main.WORLD_HEIGHT - 449f;
-
-
-        Vector3 worldCoords = game.getCamera().project(new Vector3(x, y, 0));
-        aya.setPosition(worldCoords.x, worldCoords.y);
 
         movePlayer = new MovePlayer(aya, game);
+
+        if (game.getSavedAyaPosition() != null) {
+            aya.setPosition(game.getSavedAyaPosition().x, game.getSavedAyaPosition().y); // Restaura posição salva
+        } else {
+            aya.setPosition(movePlayer.getSpawnAya().x, movePlayer.getSpawnAya().y);
+        }
+
         display = new Display(spriteBatch);
 
 
@@ -86,6 +87,7 @@ public class GameScreen implements Screen {
         movePlayer.update(delta);
 
         if (shouldSwitchToQuizScreen && movePlayer.isAtEsquina2()) {
+            game.setSavedAyaPosition(new Vector2(aya.getX(), aya.getY())); // Salva a posição atual
             game.setScreen(new QuizScreen(1, game, p));
         }
 

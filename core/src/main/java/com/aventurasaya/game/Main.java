@@ -17,6 +17,8 @@ public class Main extends Game {
     private OrthographicCamera camera;
     private SpriteBatch spriteBatch;
     private FitViewport fitViewport;
+    private Vector2 savedAyaPosition;
+
 
     @Override
     public void create() {
@@ -28,6 +30,15 @@ public class Main extends Game {
 
         this.setScreen(new HomeScreen(this));
     }
+
+    public Vector2 getSavedAyaPosition() {
+        return savedAyaPosition;
+    }
+
+    public void setSavedAyaPosition(Vector2 position) {
+        this.savedAyaPosition = position;
+    }
+
 
     public FitViewport getFitViewport() {
         return fitViewport;

@@ -25,7 +25,7 @@ public class QuizScreen implements Screen {
     private Display d;
     private Player p;
     private Vector2 touchPos;
-    
+
 
     public QuizScreen (int fase, Main game, Player p) {
         this.fase = fase;
@@ -107,7 +107,7 @@ public class QuizScreen implements Screen {
             if (respostaEscolhida != resposta && respostaEscolhida != 0) {
                 p.perdeVida();
             } else if (respostaEscolhida == resposta) {
-                // Ação para avançar para a próxima tela ou fase
+                game.setScreen(new GameScreen(game));
             }
         }
 

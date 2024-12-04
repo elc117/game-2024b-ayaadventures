@@ -136,6 +136,11 @@ public class MovePlayer {
         return pontoFinal;
     }
 
+    public Vector2 getSpawnAya() {
+        return spawnAya;
+    }
+
+
     public boolean isAtSpawn() {
         float tolerance = 1f;
         return currentPosition.epsilonEquals(spawnAya, tolerance);
