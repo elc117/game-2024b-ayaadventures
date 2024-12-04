@@ -27,6 +27,8 @@ public class GameScreen implements Screen {
 
         private MovePlayer movePlayer;
 
+        
+
     public GameScreen(Main game) {
         this.game = game;
 
@@ -75,7 +77,8 @@ public class GameScreen implements Screen {
 
         spriteBatch.draw(backGround, 0, 0, game.getCamera().viewportWidth, game.getCamera().viewportHeight);
         aya.draw(spriteBatch);
-        display.desenhaVidas(p, spriteBatch);
+        display.desenhaVidas(p, spriteBatch, Gdx.graphics.getDeltaTime());
+
 
         // Desenhe o botão "X"
         spriteBatch.draw(backButtonT, backButtonX, backButtonY, backButtonWidth, backButtonHeight);

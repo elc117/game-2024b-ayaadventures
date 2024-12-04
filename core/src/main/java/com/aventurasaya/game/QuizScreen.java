@@ -25,6 +25,7 @@ public class QuizScreen implements Screen {
     private Display d;
     private Player p;
     private Vector2 touchPos;
+    
 
     public QuizScreen (int fase, Main game, Player p) {
         this.fase = fase;
@@ -85,7 +86,9 @@ public class QuizScreen implements Screen {
         game.getSpriteBatch().begin();
         game.getSpriteBatch().draw(backGroundFase, 0, 0, game.getCamera().viewportWidth, game.getCamera().viewportHeight);
 
-        d.desenhaVidas(p, game.getSpriteBatch());
+
+        d.desenhaVidas(p, game.getSpriteBatch(), delta); // Passando o delta aqui
+
 
         if (pergunta != null) {
             font.draw(game.getSpriteBatch(), pergunta, 300, 600);
