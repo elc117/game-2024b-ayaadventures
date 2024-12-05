@@ -25,13 +25,18 @@ public class GameScreen implements Screen {
 
 
 
-    public GameScreen(Main game) {
+    public GameScreen(Main game, Player p) {
         this.game = game;
 
         this.camera = game.getCamera();
         this.spriteBatch = game.getSpriteBatch();
         this.backGround = new Texture("map.png");
-        p = new Player(5);
+
+        if (p == null) {
+            this.p = new Player(5);
+        } else {
+           this.p = p;
+        }
 
         tAya = new Texture("aya.png");
         aya = new Sprite(tAya);
@@ -46,7 +51,7 @@ public class GameScreen implements Screen {
             aya.setPosition(movePlayer.getSpawnAya().x, movePlayer.getSpawnAya().y);
         }
 
-        display = new Display(spriteBatch);
+        display = new Display(spriteBatch, game);
 
 
     }
@@ -68,6 +73,11 @@ public class GameScreen implements Screen {
 
 
         movePlayer.update(delta);
+
+        if(game.getSavedAyaPosition() == null) {
+            display.atualizaMensagem(delta);
+            display.desenhaMensagem(game.getSpriteBatch());
+        }
 
         if (shouldSwitchToQuizScreen && movePlayer.isAtEsquina2()) {
             game.setSavedAyaPosition(new Vector2(aya.getX(), aya.getY())); // Salva a posição atual

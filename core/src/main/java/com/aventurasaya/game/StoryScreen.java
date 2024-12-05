@@ -118,7 +118,7 @@ public void render(float delta) {
             } else {
                 // Verificar clique no botão "Começar"
                 if (startButton.getBoundingRectangle().contains(touchPos.x, touchPos.y)) {
-                    game.setScreen(new GameScreen(game)); // Transição para GameScreen
+                    game.setScreen(new GameScreen(game, null)); // Transição para GameScreen
                 }
             }
         }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 
 public class Display {
 
@@ -21,8 +22,10 @@ public class Display {
     private boolean showMessage = true;
     private boolean showQuest = false; // Controle para exibir a quest
     private float messageTimer = 0;
+    private Main game;
 
-    public Display(SpriteBatch spriteBatch) {
+    public Display(SpriteBatch spriteBatch, Main game) {
+        this.game = game;
         // Corações (vidas)
         tHeart = new Texture("heart.png");
         heart = new Sprite(tHeart);
@@ -50,25 +53,17 @@ public class Display {
     }
 
     public void desenhaVidas(Player p, SpriteBatch spriteBatch, float delta) {
-        // Atualiza o temporizador da mensagem
-        if (showMessage) {
-            messageTimer += delta;
-            if (messageTimer >= 5) {
-                showMessage = false;
-            }
-        }
 
         // Detectar clique no ícone de missões
         if (Gdx.input.justTouched()) {
-            float x = Gdx.input.getX();
-            float y = Gdx.graphics.getHeight() - Gdx.input.getY(); // Inverter o eixo Y
-
-            Rectangle missionBounds = missionIcon.getBoundingRectangle();
-            if (missionBounds.contains(x, y)) {
+            Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            game.getFitViewport().unproject(touchPos);
+            if (missionIcon.getBoundingRectangle().contains(touchPos.x, touchPos.y)) {
                 showQuest = !showQuest; // Alterna o valor de showQuest
             }
         }
         // Desenhar as vidas
+
         for (int i = 0; i < p.getVidas(); i++) {
             float xOffset = i * (heart.getWidth() + 10);
             heart.setPosition(Main.WORLD_WIDTH - 150 - xOffset,
@@ -79,16 +74,31 @@ public class Display {
         // Desenhar o ícone de missões
         missionIcon.draw(spriteBatch);
 
-        // Desenhar a mensagem, se ainda estiver ativa
-        if (showMessage) {
-            messageSprite.draw(spriteBatch);
-        }
 
         // Desenhar a quest, se ativada
         if (showQuest) {
             questIcon.draw(spriteBatch);
         }
     }
+
+
+    public void atualizaMensagem(float delta) {
+        // Atualiza o temporizador da mensagem
+        if (showMessage) {
+            messageTimer += delta;
+            if (messageTimer >= 5) {
+                showMessage = false;
+            }
+        }
+    }
+
+    public void desenhaMensagem(SpriteBatch spriteBatch) {
+        // Desenha a mensagem se ela ainda estiver ativa
+        if (showMessage) {
+            messageSprite.draw(spriteBatch);
+        }
+    }
+
 
     public void dispose() {
         tHeart.dispose();

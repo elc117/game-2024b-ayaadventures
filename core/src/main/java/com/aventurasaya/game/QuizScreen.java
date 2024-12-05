@@ -34,7 +34,7 @@ public class QuizScreen implements Screen {
         backGroundFase = new Texture("fase1.png");
         font = new BitmapFont();
         font.getData().setScale(2);
-        d = new Display(game.getSpriteBatch());
+        d = new Display(game.getSpriteBatch(), game);
         touchPos = new Vector2();
         lerFasesJson(fase);
     }
@@ -107,7 +107,7 @@ public class QuizScreen implements Screen {
             if (respostaEscolhida != resposta && respostaEscolhida != 0) {
                 p.perdeVida();
             } else if (respostaEscolhida == resposta) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game, p));
             }
         }
 
