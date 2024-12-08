@@ -31,7 +31,7 @@ public class QuizScreen implements Screen {
         this.fase = fase;
         this.game = game;
         this.p = p;
-        backGroundFase = new Texture("fase1.png");
+        backGroundFase = new Texture("jardimbotanico1.png");
         font = new BitmapFont();
         font.getData().setScale(2);
         d = new Display(game.getSpriteBatch(), game);
@@ -80,39 +80,69 @@ public class QuizScreen implements Screen {
     @Override
     public void show() {}
 
-    @Override
-    public void render(float delta) {
-        game.getFitViewport().apply();
-        game.getSpriteBatch().begin();
-        game.getSpriteBatch().draw(backGroundFase, 0, 0, game.getCamera().viewportWidth, game.getCamera().viewportHeight);
+   @Override
+public void render(float delta) {
+    game.getFitViewport().apply();
+    game.getSpriteBatch().begin();
 
+    // Obter dimensões reais da imagem
+    float imageWidth = backGroundFase.getWidth();
+    float imageHeight = backGroundFase.getHeight();
 
-        d.desenhaVidas(p, game.getSpriteBatch(), delta); // Passando o delta aqui
+    // Centralizar a imagem no meio da tela
+    float xImage = (game.getCamera().viewportWidth - imageWidth) / 2;
+    float yImage = (game.getCamera().viewportHeight - imageHeight) / 2;
+    game.getSpriteBatch().draw(backGroundFase, xImage, yImage);
 
-
-        if (pergunta != null) {
-            font.draw(game.getSpriteBatch(), pergunta, 300, 600);
-        }
-
-        for (int i = 0; i < alternativas.size(); i++) {
-            String alternativa = alternativas.get(i);
-            font.draw(game.getSpriteBatch(), alternativa, game.getCamera().viewportWidth / 2f, game.getCamera().viewportHeight / 1.5f - (i * 100));
-        }
-
-        if(Gdx.input.justTouched()) {
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY());
-            game.getFitViewport().unproject(touchPos);
-
-            int respostaEscolhida = verificaAlternativa(touchPos);
-            if (respostaEscolhida != resposta && respostaEscolhida != 0) {
-                p.perdeVida();
-            } else if (respostaEscolhida == resposta) {
-                game.setScreen(new GameScreen(game, p));
-            }
-        }
-
-        game.getSpriteBatch().end();
+    // Exibir pergunta acima da imagem
+    if (pergunta != null) {
+        GlyphLayout layout = new GlyphLayout(font, pergunta);
+        float xPergunta = (game.getCamera().viewportWidth - layout.width) / 2;
+        float yPergunta = game.getCamera().viewportHeight - 50; // Margem superior
+        font.draw(game.getSpriteBatch(), pergunta, xPergunta, yPergunta);
     }
+
+    // Exibir alternativas à direita da imagem
+    float xAlternativas = xImage + imageWidth + 20; // Margem à direita da imagem
+    float yAlternativasInicio = yImage + imageHeight - 50; // Iniciar no topo da imagem
+    float espacoEntreAlternativas = 70; // Espaçamento entre as alternativas
+
+    for (int i = 0; i < alternativas.size(); i++) {
+        String alternativa = alternativas.get(i);
+        font.draw(game.getSpriteBatch(), alternativa, xAlternativas, yAlternativasInicio - i * espacoEntreAlternativas);
+    }
+
+    // Detectar toques e verificar a resposta
+    if (Gdx.input.justTouched()) {
+        touchPos.set(Gdx.input.getX(), Gdx.input.getY());
+        game.getFitViewport().unproject(touchPos);
+
+        int respostaEscolhida = verificaAlternativa(touchPos, xAlternativas, yAlternativasInicio, espacoEntreAlternativas);
+        if (respostaEscolhida != resposta && respostaEscolhida != 0) {
+            p.perdeVida();
+        } else if (respostaEscolhida == resposta) {
+            game.setScreen(new GameScreen(game, p));
+        }
+    }
+
+    game.getSpriteBatch().end();
+}
+
+// Verificar qual alternativa foi selecionada
+private int verificaAlternativa(Vector2 touchPos, float xAlternativas, float yAlternativasInicio, float espacoEntreAlternativas) {
+    float larguraAlternativa = 300; // Largura aproximada de cada alternativa
+    float alturaAlternativa = 40;  // Altura de cada alternativa
+
+    for (int i = 0; i < alternativas.size(); i++) {
+        float yAtual = yAlternativasInicio - i * espacoEntreAlternativas;
+
+        if (touchPos.x >= xAlternativas && touchPos.x <= xAlternativas + larguraAlternativa &&
+            touchPos.y >= yAtual - alturaAlternativa && touchPos.y <= yAtual) {
+            return i + 1;
+        }
+    }
+    return 0; // Nenhuma alternativa foi clicada
+}
 
     @Override
     public void resize(int width, int height) {
