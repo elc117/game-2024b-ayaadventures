@@ -18,7 +18,7 @@ public class MovePlayer {
 
 
 
-    public MovePlayer(Sprite aya, Main game) {
+    public MovePlayer(Sprite aya, Main game, Vector2 posAtual) {
         this.aya = aya;
 
         float worldWidth = game.getFitViewport().getCamera().viewportWidth;
@@ -33,7 +33,7 @@ public class MovePlayer {
         esquina6 = new Vector2(worldWidth - 530f, worldHeight - 449f);
         pontoFinal = new Vector2(worldWidth - 360f, worldHeight - 449f);
 
-        currentPosition = new Vector2(spawnAya);
+        currentPosition = new Vector2(posAtual != null ? posAtual :spawnAya);
         targetPosition = new Vector2();
         direction = new Vector2();
         destinations = new LinkedList<>();
@@ -142,13 +142,15 @@ public class MovePlayer {
 
 
     public boolean isAtSpawn() {
-        float tolerance = 1f;
+        float tolerance = 1; // Use a largura/altura como margem de erro
         return currentPosition.epsilonEquals(spawnAya, tolerance);
     }
 
     public boolean isAtEsquina2() {
-        return currentPosition.epsilonEquals(esquina2,1f);
+        float tolerance = 1;
+        return currentPosition.epsilonEquals(esquina2, tolerance);
     }
+
 
     public boolean isAtEsquina3() {
         return currentPosition.epsilonEquals(esquina3,1f);

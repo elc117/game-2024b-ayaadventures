@@ -40,13 +40,14 @@ public class GameScreen implements Screen {
 
         tAya = new Texture("aya.png");
         aya = new Sprite(tAya);
-        aya.setSize(aya.getWidth() / 1f, aya.getHeight() / 1f);
+        aya.setSize(aya.getWidth() / 1.5f, aya.getHeight() / 1.5f);
 
-
-        movePlayer = new MovePlayer(aya, game);
+        movePlayer = new MovePlayer(aya, game,game.getSavedAyaPosition());
 
         if (game.getSavedAyaPosition() != null) {
-            aya.setPosition(game.getSavedAyaPosition().x, game.getSavedAyaPosition().y); // Restaura posição salva
+            aya.setPosition(game.getSavedAyaPosition().x - aya.getWidth() / 2,
+                game.getSavedAyaPosition().y - aya.getHeight() / 2);
+            System.out.println("aya x:" + aya.getX() + "Y:" + aya.getY());
         } else {
             aya.setPosition(movePlayer.getSpawnAya().x, movePlayer.getSpawnAya().y);
         }
@@ -80,7 +81,7 @@ public class GameScreen implements Screen {
         }
 
         if (shouldSwitchToQuizScreen && movePlayer.isAtEsquina2()) {
-            game.setSavedAyaPosition(new Vector2(aya.getX(), aya.getY())); // Salva a posição atual
+            game.setSavedAyaPosition(movePlayer.getEsquina2());
             game.setScreen(new QuizScreen(1, game, p));
         }
 
