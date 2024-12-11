@@ -2,6 +2,7 @@ package com.aventurasaya.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,9 +33,15 @@ public class StoryScreen implements Screen {
         {750, 195}  // Coordenadas para msg4.png
     };
 
+    private Sound buttonhover;
+    private boolean hoverSoundPlayed = false;
+
     public StoryScreen(Main game) {
         this.game = game;
         this.batch = game.getSpriteBatch();
+
+        // Carregar o som de hover
+        buttonhover = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
 
         // Carregar as imagens
         images = new Texture[] {
@@ -74,35 +81,36 @@ public class StoryScreen implements Screen {
     public void show() {}
 
     @Override
-public void render(float delta) {
-    game.getFitViewport().apply();
-    game.getCamera().update();
-    batch.setProjectionMatrix(game.getCamera().combined);
+    public void render(float delta) {
+        game.getFitViewport().apply();
+        game.getCamera().update();
+        batch.setProjectionMatrix(game.getCamera().combined);
 
-    // Limpar a tela para branco
-    Gdx.gl.glClearColor(1, 1, 1, 1);
-    Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
+        // Limpar a tela para branco
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
-    batch.begin();
+        batch.begin();
 
-    // Desenhar todas as imagens até o índice atual (sobreposição)
-    for (int i = 0; i <= currentImageIndex; i++) {
-        float[] imagePos = imagePositions[i];
-        batch.draw(images[i], imagePos[0], imagePos[1]);
+        // Desenhar todas as imagens até o índice atual (sobreposição)
+        for (int i = 0; i <= currentImageIndex; i++) {
+            float[] imagePos = imagePositions[i];
+            batch.draw(images[i], imagePos[0], imagePos[1]);
+        }
+
+        // Desenhar o botão correspondente
+        if (currentImageIndex < images.length - 1) {
+            nextButton.draw(batch); // Botão "Próximo"
+        } else {
+            startButton.draw(batch); // Botão "Começar"
+        }
+
+        batch.end();
+
+        // Verificar cliques no botão
+        handleButtonClick();
+        handleHover();
     }
-
-    // Desenhar o botão correspondente
-    if (currentImageIndex < images.length - 1) {
-        nextButton.draw(batch); // Botão "Próximo"
-    } else {
-        startButton.draw(batch); // Botão "Começar"
-    }
-
-    batch.end();
-
-    // Verificar cliques no botão
-    handleButtonClick();
-}
 
     private void handleButtonClick() {
         if (Gdx.input.justTouched()) {
@@ -121,6 +129,28 @@ public void render(float delta) {
                     game.setScreen(new GameScreen(game, null)); // Transição para GameScreen
                 }
             }
+        }
+    }
+
+    private void handleHover() {
+        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        game.getFitViewport().unproject(mousePos);
+
+        boolean isHovering = false;
+
+        if (currentImageIndex < images.length - 1) {
+            isHovering = nextButton.getBoundingRectangle().contains(mousePos.x, mousePos.y);
+        } else {
+            isHovering = startButton.getBoundingRectangle().contains(mousePos.x, mousePos.y);
+        }
+
+        if (isHovering) {
+            if (!hoverSoundPlayed) {
+                buttonhover.play();
+                hoverSoundPlayed = true;
+            }
+        } else {
+            hoverSoundPlayed = false;
         }
     }
 
@@ -145,5 +175,6 @@ public void render(float delta) {
         }
         nextButton.getTexture().dispose();
         startButton.getTexture().dispose();
+        buttonhover.dispose(); // Liberar o som
     }
 }

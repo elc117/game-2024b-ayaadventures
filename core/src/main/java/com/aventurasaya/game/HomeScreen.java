@@ -3,41 +3,35 @@ package com.aventurasaya.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 /** First screen of the application. Displayed after the application is created. */
 public class HomeScreen implements Screen {
 
     private final Main game;
-    private Texture backGround, tPlayButton;
-    private Sprite playButton;
+    private Texture backGround;
     private Sound clickSound, buttonhover;
+    private Rectangle playButtonArea; 
     private boolean hoverSoundPlayed = false;
-
 
     public HomeScreen(Main game) {
         this.game = game;
 
-        tPlayButton = new Texture("play.png");
-        playButton = new Sprite(tPlayButton);
-        playButton.setSize(playButton.getWidth() / 2.5f, playButton.getHeight()/ 2.5f);
+        // Define a área do botão
+        float buttonWidth = 100; 
+        float buttonHeight = 50; 
+        float buttonX = game.getCamera().viewportWidth - buttonWidth - 750; 
+        float buttonY = 250; 
 
-        float buttonX = (game.getCamera().viewportWidth - playButton.getWidth()) / 2;
-        float buttonY = game.getCamera().viewportHeight / 3.5f;
+        playButtonArea = new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
 
-
-        playButton.setPosition(buttonX, buttonY);
-
-        backGround = new Texture("background.png");
+        backGround = new Texture("homescreen.png");
 
         clickSound = Gdx.audio.newSound(Gdx.files.internal("meow.ogg"));
-        buttonhover = Gdx.audio.newSound(Gdx.files.internal("button hover.mp3"));
-
+        buttonhover = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
     }
-
 
     @Override
     public void show() {
@@ -54,14 +48,12 @@ public class HomeScreen implements Screen {
 
         game.getSpriteBatch().draw(backGround, 0, 0, game.getCamera().viewportWidth, game.getCamera().viewportHeight);
 
-        playButton.draw(game.getSpriteBatch());
-
         game.getSpriteBatch().end();
 
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         game.getFitViewport().unproject(mousePos);
 
-        if (playButton.getBoundingRectangle().contains(mousePos.x, mousePos.y)) {
+        if (playButtonArea.contains(mousePos.x, mousePos.y)) {
             if (!hoverSoundPlayed) {
                 buttonhover.play();
                 hoverSoundPlayed = true;
@@ -77,7 +69,7 @@ public class HomeScreen implements Screen {
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             game.getFitViewport().unproject(touchPos);
-            if (playButton.getBoundingRectangle().contains(touchPos.x, touchPos.y)) {
+            if (playButtonArea.contains(touchPos.x, touchPos.y)) {
                 clickSound.play();
                 game.setScreen(new StoryScreen(game));
             }
@@ -107,6 +99,7 @@ public class HomeScreen implements Screen {
     @Override
     public void dispose() {
         backGround.dispose();
-        tPlayButton.dispose();
+        clickSound.dispose();
+        buttonhover.dispose();
     }
 }

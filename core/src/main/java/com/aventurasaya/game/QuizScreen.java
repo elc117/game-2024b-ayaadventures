@@ -17,10 +17,11 @@ public class QuizScreen implements Screen {
     private Player p;
     private Vector2 touchPos;
 
-    private float xResposta;
-    private float yResposta;
-    private float larguraResposta;
-    private float alturaResposta;
+    // Coordenadas da área correta
+    private float xResposta, yResposta, larguraResposta, alturaResposta;
+
+    // Coordenadas das áreas erradas
+    private float[][] areasErradas;
 
     public QuizScreen(int fase, Main game, Player p) {
         this.fase = fase;
@@ -34,6 +35,7 @@ public class QuizScreen implements Screen {
         respostaCorreta = false;
 
         definirAreaCorreta(fase);
+        definirAreasErradas();
     }
 
     private void definirAreaCorreta(int fase) {
@@ -45,45 +47,65 @@ public class QuizScreen implements Screen {
         }
     }
 
-    private boolean verificaToque(Vector2 touchPos) {
-        return touchPos.x >= xResposta && touchPos.x <= xResposta + larguraResposta &&
-               touchPos.y >= yResposta && touchPos.y <= yResposta + alturaResposta;
+    private void definirAreasErradas() {
+        // Definindo 3 áreas para respostas erradas
+        areasErradas = new float[][] {
+            {742, 409, 212, 48},  // Área 1: x, y, largura, altura
+            {742, 351, 212, 48},  // Área 2
+            {742, 301, 212, 48}   // Área 3
+        };
+    }
+
+    private boolean verificaToque(Vector2 touchPos, float x, float y, float largura, float altura) {
+        return touchPos.x >= x && touchPos.x <= x + largura &&
+               touchPos.y >= y && touchPos.y <= y + altura;
     }
 
     @Override
     public void render(float delta) {
         game.getFitViewport().apply();
         game.getSpriteBatch().begin();
-
+    
+        // Exibe o fundo normalmente
+        game.getSpriteBatch().draw(backGroundFase, 
+            (game.getCamera().viewportWidth - backGroundFase.getWidth()) / 2, 
+            (game.getCamera().viewportHeight - backGroundFase.getHeight()) / 2);
+    
         // Se a resposta foi correta, mostrar a imagem por 5 segundos
         if (respostaCorreta) {
             tempoImagemExibida += delta;  // Incrementa o temporizador
-            game.getSpriteBatch().draw(respostaCorretaImage, (game.getCamera().viewportWidth - respostaCorretaImage.getWidth()) / 2, 
-                                        (game.getCamera().viewportHeight - respostaCorretaImage.getHeight()) / 2);
-            if (tempoImagemExibida >= 5) {
+            game.getSpriteBatch().draw(respostaCorretaImage, 
+                (game.getCamera().viewportWidth - respostaCorretaImage.getWidth()) / 2, 
+                (game.getCamera().viewportHeight - respostaCorretaImage.getHeight()) / 2);
+            if (tempoImagemExibida >= 3) {
                 game.setScreen(new GameScreen(game, p)); // Muda para a tela de GameScreen após 5 segundos
             }
-        } else {
-            // Caso contrário, exibe o fundo normalmente
-            game.getSpriteBatch().draw(backGroundFase, (game.getCamera().viewportWidth - backGroundFase.getWidth()) / 2, 
-                                        (game.getCamera().viewportHeight - backGroundFase.getHeight()) / 2);
         }
-
+    
         // Detecta o toque e verifica a resposta
         if (Gdx.input.justTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             game.getFitViewport().unproject(touchPos);
-
-            if (verificaToque(touchPos)) {
+    
+            if (verificaToque(touchPos, xResposta, yResposta, larguraResposta, alturaResposta)) {
                 respostaCorreta = true;  // Marca como resposta correta
                 tempoImagemExibida = 0;  // Reinicia o temporizador
             } else {
-                p.perdeVida();  // Resposta errada
+                boolean tocouErrado = false;
+                // Verifica se tocou em uma das áreas erradas
+                for (float[] area : areasErradas) {
+                    if (verificaToque(touchPos, area[0], area[1], area[2], area[3])) {
+                        p.perdeVida();  // Resposta errada
+                        tocouErrado = true;
+                        break;
+                    }
+                }
             }
         }
-
+    
         game.getSpriteBatch().end();
     }
+    
 
     @Override
     public void resize(int width, int height) {
