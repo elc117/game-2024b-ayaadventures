@@ -9,7 +9,7 @@ public class QuizScreen implements Screen {
 
     private Texture backGroundFase;
     private Texture[] imagensFase; // Imagens para cada fase
-    private Texture respostaCorretaImage; // Imagem a ser exibida após a resposta correta
+    private Texture respostaCorretaImage, respostaCorretaImage2; // Imagem a ser exibida após a resposta correta
     private Texture imagemAtual; // Imagem a ser exibida no hover
     private float tempoImagemExibida; // Temporizador
     private boolean respostaCorreta; // Flag para verificar se a resposta foi correta
@@ -61,6 +61,7 @@ public class QuizScreen implements Screen {
         } else {
             backGroundFase = new Texture("carrefour.png");
             respostaCorretaImage = new Texture("FIM1.png");
+            respostaCorretaImage2 = new Texture("FIM2.png");
         }
 
         d = new Display(game.getSpriteBatch(), game);
@@ -161,19 +162,22 @@ public class QuizScreen implements Screen {
             game.getSpriteBatch().draw(respostaCorretaImage,
                 (game.getCamera().viewportWidth - respostaCorretaImage.getWidth()) / 2,
                 (game.getCamera().viewportHeight - respostaCorretaImage.getHeight()) / 2);
-            if (tempoImagemExibida >= 3) {
+            if (tempoImagemExibida >= 3 && fase != 5) {
                 game.setScreen(new GameScreen(game, p)); // Muda para a tela de GameScreen após 3 segundos
             }
+
+
         }
 
         // Detecta o toque e verifica a resposta
         if (Gdx.input.justTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             game.getFitViewport().unproject(touchPos);
+            System.out.println("POS x:" + touchPos.x + "y:" + touchPos.y);
 
             if (verificaToque(touchPos, xResposta, yResposta, larguraResposta, alturaResposta)) {
                 respostaCorreta = true; // Marca como resposta correta
-                tempoImagemExibida = 0; // Reinicia o temporizador
+                tempoImagemExibida = 0;// Reinicia o temporizador
             } else {
                 boolean tocouErrado = false;
                 // Verifica se tocou em uma das áreas erradas
@@ -185,7 +189,17 @@ public class QuizScreen implements Screen {
                     }
                 }
             }
+
+            // MOSTRAR TELA FINAL, NÃO FUNCIONA AINDA
+            if (fase == 5 && respostaCorreta) {
+                if (verificaToque(touchPos, 474, 269, 69, 23)) { // coordenadas do botão de FIM1
+                    game.getSpriteBatch().draw(respostaCorretaImage2, game.getCamera().viewportWidth - respostaCorretaImage2.getWidth() / 2f,
+                        game.getCamera().viewportWidth - respostaCorretaImage2.getHeight() / 2f);
+                }
+            }
         }
+
+
 
         game.getSpriteBatch().end();
     }
