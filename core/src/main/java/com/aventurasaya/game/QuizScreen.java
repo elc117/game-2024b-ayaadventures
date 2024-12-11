@@ -61,7 +61,10 @@ public class QuizScreen implements Screen {
         if (fase == 1 || fase == 2 || fase == 5) {
             yResposta = 409;
         } else if (fase == 3) {
-            yResposta = 351;
+            yResposta = 298;
+            xResposta = 709;
+            larguraResposta = 253;
+            alturaResposta = 50;
         } else if (fase == 4) {
             yResposta = 461;
         }
@@ -76,9 +79,9 @@ public class QuizScreen implements Screen {
             };
         } else if (fase == 3) {
             areasErradas = new float[][] {
-                {742, 461, 212, 48},  // Área 1: x, y, largura, altura
-                {742, 409, 212, 48},  // Área 2
-                {742, 301, 212, 48}   // Área 3
+                {709, 456, 253, 50},  // Área 1: x, y, largura, altura
+                {709, 377, 253, 50},  // Área 2
+                {709, 219, 253, 50}   // Área 3
             };
         } else if (fase == 4) {
             areasErradas = new float[][] {
@@ -120,6 +123,7 @@ public class QuizScreen implements Screen {
         if (Gdx.input.justTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             game.getFitViewport().unproject(touchPos);
+
 
             if (verificaToque(touchPos, xResposta, yResposta, larguraResposta, alturaResposta)) {
                 respostaCorreta = true;  // Marca como resposta correta

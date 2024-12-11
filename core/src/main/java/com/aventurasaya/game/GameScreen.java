@@ -91,7 +91,7 @@ public class GameScreen implements Screen {
 
         if (shouldSwitchToQuizScreen && movePlayer.isAtEsquina5()) {
             game.setSavedAyaPosition(movePlayer.getEsquina5());
-            //game.setScreen(new QuizScreen(3, game, p));
+            game.setScreen(new QuizScreen(3, game, p));
         }
 
         if (shouldSwitchToQuizScreen && movePlayer.isAtEsquina6()) {
