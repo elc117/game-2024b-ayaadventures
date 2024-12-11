@@ -47,7 +47,6 @@ public class GameScreen implements Screen {
         if (game.getSavedAyaPosition() != null) {
             aya.setPosition(game.getSavedAyaPosition().x - aya.getWidth() / 2,
                 game.getSavedAyaPosition().y - aya.getHeight() / 2);
-            System.out.println("aya x:" + aya.getX() + "Y:" + aya.getY());
         } else {
             aya.setPosition(movePlayer.getSpawnAya().x, movePlayer.getSpawnAya().y);
         }
@@ -85,6 +84,26 @@ public class GameScreen implements Screen {
             game.setScreen(new QuizScreen(1, game, p));
         }
 
+        if (shouldSwitchToQuizScreen && movePlayer.isAtEsquina3()) {
+            game.setSavedAyaPosition(movePlayer.getEsquina3());
+            game.setScreen(new QuizScreen(2, game, p));
+        }
+
+        if (shouldSwitchToQuizScreen && movePlayer.isAtEsquina5()) {
+            game.setSavedAyaPosition(movePlayer.getEsquina5());
+            //game.setScreen(new QuizScreen(3, game, p));
+        }
+
+        if (shouldSwitchToQuizScreen && movePlayer.isAtEsquina6()) {
+            game.setSavedAyaPosition(movePlayer.getEsquina6());
+            game.setScreen(new QuizScreen(4, game, p));
+        }
+
+        if (shouldSwitchToQuizScreen && movePlayer.isAtPontoFinal()) {
+            game.setSavedAyaPosition(movePlayer.getPontoFinal());
+            game.setScreen(new QuizScreen(5, game, p));
+        }
+
 
         if (Gdx.input.justTouched()) {
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -96,13 +115,16 @@ public class GameScreen implements Screen {
                 shouldSwitchToQuizScreen = true;
             } else if (isPointClicked(touchPos, movePlayer.getEsquina3()) && movePlayer.isAtEsquina2()) {
                 movePlayer.moveToEsquina3();
+                shouldSwitchToQuizScreen = true;
             } else if (isPointClicked(touchPos, movePlayer.getEsquina5()) && movePlayer.isAtEsquina3()) {
-                // Mover para esquina4 antes de esquina5
                 movePlayer.moveTo(movePlayer.getEsquina4(), movePlayer.getEsquina5());
+                shouldSwitchToQuizScreen = true;
             } else if (isPointClicked(touchPos, movePlayer.getEsquina6()) && movePlayer.isAtEsquina5()) {
                 movePlayer.moveToEsquina6();
+                shouldSwitchToQuizScreen = true;
             } else if (isPointClicked(touchPos, movePlayer.getPontoFinal()) && movePlayer.isAtEsquina6()) {
                 movePlayer.moveToPontoFinal();
+                shouldSwitchToQuizScreen = true;
             }
         }
 

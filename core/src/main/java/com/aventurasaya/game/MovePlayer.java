@@ -142,7 +142,7 @@ public class MovePlayer {
 
 
     public boolean isAtSpawn() {
-        float tolerance = 1; // Use a largura/altura como margem de erro
+        float tolerance = 1;
         return currentPosition.epsilonEquals(spawnAya, tolerance);
     }
 
@@ -164,5 +164,8 @@ public class MovePlayer {
         return currentPosition.epsilonEquals(esquina6,1f);
     }
 
+    public boolean isAtPontoFinal() {
+        return currentPosition.epsilonEquals(pontoFinal,1f);
+    }
 
 }

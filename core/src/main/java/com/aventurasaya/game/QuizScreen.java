@@ -27,8 +27,24 @@ public class QuizScreen implements Screen {
         this.fase = fase;
         this.game = game;
         this.p = p;
-        backGroundFase = new Texture("jardimbotanico1.png");
-        respostaCorretaImage = new Texture("rmimi.png");  // Imagem de resposta correta
+
+        if (fase == 1) {
+            backGroundFase = new Texture("estacaoferroviaria.png");
+            respostaCorretaImage = new Texture("rmimi.png");
+        } else if (fase == 2) {
+            backGroundFase = new Texture("catedral.png");
+            respostaCorretaImage = new Texture("rkira.png");
+        } else if (fase == 3) {
+            backGroundFase = new Texture("vilabelga.png");
+            respostaCorretaImage = new Texture("rfofao.png");
+        } else if (fase == 4) {
+            backGroundFase = new Texture("jardimbotanico1.png");
+            respostaCorretaImage = new Texture("rheart.png");
+        } else {
+            backGroundFase = new Texture("carrefour.png");
+            respostaCorretaImage = new Texture("FIM1.png");
+        }
+
         d = new Display(game.getSpriteBatch(), game);
         touchPos = new Vector2();
         tempoImagemExibida = 0;
@@ -39,21 +55,38 @@ public class QuizScreen implements Screen {
     }
 
     private void definirAreaCorreta(int fase) {
-        if (fase == 1) {
-            xResposta = 742;
+        xResposta = 742;
+        larguraResposta = 212;
+        alturaResposta = 48;
+        if (fase == 1 || fase == 2 || fase == 5) {
+            yResposta = 409;
+        } else if (fase == 3) {
+            yResposta = 351;
+        } else if (fase == 4) {
             yResposta = 461;
-            larguraResposta = 212;
-            alturaResposta = 48;
         }
     }
 
     private void definirAreasErradas() {
-        // Definindo 3 áreas para respostas erradas
-        areasErradas = new float[][] {
-            {742, 409, 212, 48},  // Área 1: x, y, largura, altura
-            {742, 351, 212, 48},  // Área 2
-            {742, 301, 212, 48}   // Área 3
-        };
+        if (fase == 1 || fase == 2 || fase == 5) {
+            areasErradas = new float[][] {
+                {742, 461, 212, 48},  // Área 1: x, y, largura, altura
+                {742, 351, 212, 48},  // Área 2
+                {742, 301, 212, 48}   // Área 3
+            };
+        } else if (fase == 3) {
+            areasErradas = new float[][] {
+                {742, 461, 212, 48},  // Área 1: x, y, largura, altura
+                {742, 409, 212, 48},  // Área 2
+                {742, 301, 212, 48}   // Área 3
+            };
+        } else if (fase == 4) {
+            areasErradas = new float[][] {
+                {742, 351, 212, 48},  // Área 1: x, y, largura, altura
+                {742, 409, 212, 48},  // Área 2
+                {742, 301, 212, 48}   // Área 3
+            };
+        }
     }
 
     private boolean verificaToque(Vector2 touchPos, float x, float y, float largura, float altura) {
@@ -65,28 +98,29 @@ public class QuizScreen implements Screen {
     public void render(float delta) {
         game.getFitViewport().apply();
         game.getSpriteBatch().begin();
-    
+        d.desenhaVidas(p,game.getSpriteBatch(), delta);
+
         // Exibe o fundo normalmente
-        game.getSpriteBatch().draw(backGroundFase, 
-            (game.getCamera().viewportWidth - backGroundFase.getWidth()) / 2, 
+        game.getSpriteBatch().draw(backGroundFase,
+            (game.getCamera().viewportWidth - backGroundFase.getWidth()) / 2,
             (game.getCamera().viewportHeight - backGroundFase.getHeight()) / 2);
-    
+
         // Se a resposta foi correta, mostrar a imagem por 5 segundos
         if (respostaCorreta) {
             tempoImagemExibida += delta;  // Incrementa o temporizador
-            game.getSpriteBatch().draw(respostaCorretaImage, 
-                (game.getCamera().viewportWidth - respostaCorretaImage.getWidth()) / 2, 
+            game.getSpriteBatch().draw(respostaCorretaImage,
+                (game.getCamera().viewportWidth - respostaCorretaImage.getWidth()) / 2,
                 (game.getCamera().viewportHeight - respostaCorretaImage.getHeight()) / 2);
             if (tempoImagemExibida >= 3) {
                 game.setScreen(new GameScreen(game, p)); // Muda para a tela de GameScreen após 5 segundos
             }
         }
-    
+
         // Detecta o toque e verifica a resposta
         if (Gdx.input.justTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             game.getFitViewport().unproject(touchPos);
-    
+
             if (verificaToque(touchPos, xResposta, yResposta, larguraResposta, alturaResposta)) {
                 respostaCorreta = true;  // Marca como resposta correta
                 tempoImagemExibida = 0;  // Reinicia o temporizador
@@ -102,10 +136,10 @@ public class QuizScreen implements Screen {
                 }
             }
         }
-    
+
         game.getSpriteBatch().end();
     }
-    
+
 
     @Override
     public void resize(int width, int height) {
