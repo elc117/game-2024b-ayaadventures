@@ -162,18 +162,21 @@ public class QuizScreen implements Screen {
             game.getSpriteBatch().draw(respostaCorretaImage,
                 (game.getCamera().viewportWidth - respostaCorretaImage.getWidth()) / 2,
                 (game.getCamera().viewportHeight - respostaCorretaImage.getHeight()) / 2);
+
             if (tempoImagemExibida >= 3 && fase != 5) {
                 game.setScreen(new GameScreen(game, p)); // Muda para a tela de GameScreen após 3 segundos
             }
 
+            if (tempoImagemExibida >= 10 && fase == 5) {
+                game.setScreen(new HomeScreen(game));
+            }
 
         }
 
         // Detecta o toque e verifica a resposta
-        if (Gdx.input.justTouched()) {
+        if (Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             game.getFitViewport().unproject(touchPos);
-            System.out.println("POS x:" + touchPos.x + "y:" + touchPos.y);
 
             if (verificaToque(touchPos, xResposta, yResposta, larguraResposta, alturaResposta)) {
                 respostaCorreta = true; // Marca como resposta correta
@@ -190,17 +193,17 @@ public class QuizScreen implements Screen {
                 }
             }
 
-            // MOSTRAR TELA FINAL, NÃO FUNCIONA AINDA
-            if (fase == 5 && respostaCorreta) {
-                if (verificaToque(touchPos, 474, 269, 69, 23)) { // coordenadas do botão de FIM1
-                    game.getSpriteBatch().draw(respostaCorretaImage2, game.getCamera().viewportWidth - respostaCorretaImage2.getWidth() / 2f,
-                        game.getCamera().viewportWidth - respostaCorretaImage2.getHeight() / 2f);
-                }
-            }
+
         }
+        if (fase == 5 && respostaCorreta) {
+            if (cursorPos.x >= 474 && cursorPos.x <= 474 + 69 &&
+                cursorPos.y >= 269 && cursorPos.y <= 269 + 23) {
+                game.getSpriteBatch().draw(respostaCorretaImage2,
+                    (game.getCamera().viewportWidth - respostaCorretaImage2.getWidth()) / 2,
+                    (game.getCamera().viewportHeight - respostaCorretaImage2.getHeight()) / 2);
+            }
 
-
-
+        }
         game.getSpriteBatch().end();
     }
 
