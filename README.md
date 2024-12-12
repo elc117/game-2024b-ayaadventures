@@ -16,6 +16,9 @@ Ao longo da aventura, Aya percorre trilhas entre os pontos turísticos, aprenden
 
 O jogo começa com uma história que contextualiza o enredo, explicando o rapto dos amigos de Aya e sua missão de resgatá-los. Em seguida, o jogador é levado a um mapa com cinco pontos turísticos marcados. Aya deve visitar cada um desses locais para responder a quizzes sobre curiosidades dos lugares.
 
+![mapa](https://github.com/elc117/game-2024b-ayaadventures/blob/main/assets/map.png)
+
+
 ### Locais do Jogo
 
 - **Vila Belga**
@@ -41,7 +44,7 @@ No início, a ideia era simples: um jogo de perguntas e respostas ambientado em 
 
 ## Diagrama de Classes
 
-![diagrama](https://github.com/elc117/game-2024b-ayaadventures/blob/main/f5276b58-81bb-4fc0-b7ee-675c1a172fff.jpg?raw=true)](https://github.com/elc117/game-2024b-ayaadventures/blob/main/f5276b58-81bb-4fc0-b7ee-675c1a172fff.jpg)
+![diagrama](https://github.com/elc117/game-2024b-ayaadventures/blob/main/f5276b58-81bb-4fc0-b7ee-675c1a172fff.jpg?raw=true)
 
 ## Referências
 
