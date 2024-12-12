@@ -11,6 +11,7 @@ public class QuizScreen implements Screen {
     private Texture[] imagensFase; // Imagens para cada fase
     private Texture respostaCorretaImage, respostaCorretaImage2; // Imagem a ser exibida após a resposta correta
     private Texture imagemAtual; // Imagem a ser exibida no hover
+    private Texture gameOver;
     private float tempoImagemExibida; // Temporizador
     private boolean respostaCorreta; // Flag para verificar se a resposta foi correta
     private boolean mostrarImagem; // Controle para exibir/ocultar imagem no hover
@@ -45,7 +46,7 @@ public class QuizScreen implements Screen {
 
         imagemAtual = imagensFase[fase - 1]; // Seleciona a imagem correspondente à fase
         mostrarImagem = false;
-
+        gameOver = new Texture("gameover.png");
         if (fase == 1) {
             backGroundFase = new Texture("estacaoferroviaria.png");
             respostaCorretaImage = new Texture("rmimi.png");
@@ -195,6 +196,9 @@ public class QuizScreen implements Screen {
 
 
         }
+
+
+
         if (fase == 5 && respostaCorreta) {
             if (cursorPos.x >= 474 && cursorPos.x <= 474 + 69 &&
                 cursorPos.y >= 269 && cursorPos.y <= 269 + 23) {

@@ -2,9 +2,11 @@ package com.aventurasaya.game;
 
 public class Player {
     private int vidas;
+    private Main game;
 
-    public Player (int vidas) {
+    public Player (int vidas, Main game) {
         this.vidas = vidas;
+        this.game = game;
     }
 
     public void setVidas(int vidas) {
@@ -13,14 +15,14 @@ public class Player {
     }
 
     public int getVidas() {
-        return this.vidas;
+        return vidas;
     }
 
     public void perdeVida() {
-        if (vidas > 0) {
+        if (vidas > 1) {
             vidas--; // Apenas reduz se ainda houver vidas
         } else {
-            System.out.println("Game Over! O jogador já não tem mais vidas.");
+            game.setScreen(new gameOverScreen(game));
         }
     }
 }

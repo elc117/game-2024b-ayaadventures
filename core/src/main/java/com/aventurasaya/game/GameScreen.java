@@ -33,7 +33,7 @@ public class GameScreen implements Screen {
         this.backGround = new Texture("map.png");
 
         if (p == null) {
-            this.p = new Player(5);
+            this.p = new Player(5, game);
         } else {
            this.p = p;
         }
