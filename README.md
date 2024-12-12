@@ -1,5 +1,5 @@
 # Aya Adventures
-
+![tela](https://github.com/elc117/game-2024b-ayaadventures/blob/main/assets/homescreen.png)
 ## Sobre o Jogo
 
 Aya Adventures é um jogo em que a protagonista, Aya, uma gatinha determinada, enfrenta o desafio de resgatar seus amigos, que foram raptados e presos em diferentes pontos turísticos da cidade de Santa Maria. Cada local oferece um quiz relacionado ao lugar, com perguntas que revelam curiosidades sobre sua história, cultura e relevância.
