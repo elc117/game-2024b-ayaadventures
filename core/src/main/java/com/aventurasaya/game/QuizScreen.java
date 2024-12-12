@@ -174,7 +174,7 @@ public class QuizScreen implements Screen {
         }
 
         // Detecta o toque e verifica a resposta
-        if (Gdx.input.isTouched()) {
+        if (Gdx.input.justTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             game.getFitViewport().unproject(touchPos);
 
