@@ -41,7 +41,7 @@ No início, a ideia era simples: um jogo de perguntas e respostas ambientado em 
 
 ## Diagrama de Classes
 
-![image.png]([https://prod-files-secure.s3.us-west-2.amazonaws.com/b361a0b2-c7a8-459a-bb06-dd7edd246d8e/9a6342fe-920d-4f02-b096-76737527ac25/image.png](https://img.notionusercontent.com/s3/prod-files-secure%2Fb361a0b2-c7a8-459a-bb06-dd7edd246d8e%2F9a6342fe-920d-4f02-b096-76737527ac25%2Fimage.png/size/w=2000?exp=1733971525&sig=HIsd0wgkGp6JJ28S0E44YNuwsXbZBzeIWl7cC0nxJmg))
+![image.png]((https://github.com/elc117/game-2024b-ayaadventures/blob/main/f5276b58-81bb-4fc0-b7ee-675c1a172fff.jpg?raw=true))
 
 ## Referências
 
