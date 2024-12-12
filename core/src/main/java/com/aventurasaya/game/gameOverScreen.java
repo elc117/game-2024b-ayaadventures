@@ -12,6 +12,7 @@ public class gameOverScreen implements Screen {
     public gameOverScreen(Main game) {
         this.game = game;
         tela = new Texture("gameover.png");
+        tempo = 0;
     }
 
 
@@ -23,6 +24,7 @@ public class gameOverScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        tempo += delta;
         game.getFitViewport().apply();
         game.getSpriteBatch().begin();
 
@@ -31,6 +33,11 @@ public class gameOverScreen implements Screen {
             (game.getCamera().viewportHeight - tela.getHeight()) / 2);
 
         game.getSpriteBatch().end();
+
+        if (tempo >= 5) {
+            game.setSavedAyaPosition(null);
+            game.setScreen(new HomeScreen(game));
+        }
     }
 
     @Override

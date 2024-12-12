@@ -169,6 +169,7 @@ public class QuizScreen implements Screen {
             }
 
             if (tempoImagemExibida >= 10 && fase == 5) {
+                game.setSavedAyaPosition(null);
                 game.setScreen(new HomeScreen(game));
             }
 
