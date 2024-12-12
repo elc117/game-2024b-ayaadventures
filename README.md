@@ -1,91 +1,63 @@
-# Aventuras de Aya
+# Aya Adventures
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+## Sobre o Jogo
 
-This project was generated with a template including simple application launchers and a main class extending `Game` that sets the first screen.
+Aya Adventures é um jogo em que a protagonista, Aya, uma gatinha determinada, enfrenta o desafio de resgatar seus amigos, que foram raptados e presos em diferentes pontos turísticos da cidade de Santa Maria. Cada local oferece um quiz relacionado ao lugar, com perguntas que revelam curiosidades sobre sua história, cultura e relevância.
 
-## Platforms
+Ao longo da aventura, Aya percorre trilhas entre os pontos turísticos, aprendendo mais sobre os lugares enquanto resolve os desafios necessários para libertar seus amigos. O jogo combina diversão e conhecimento, incentivando os jogadores a conhecerem mais sobre a cidade de Santa Maria e valorizarem seus atrativos culturais.
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
-- `html`: Web platform using GWT and WebGL. Supports only Java projects.
+## Identificação
 
-## Gradle
+- **Autores:** Leonardo Dallanora & Luiza Manoelle dos Santos
+- **Curso:** Sistemas de Informação - Universidade Federal de Santa Maria (UFSM)
+- **Disciplina:** Paradigmas de Programação
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+## Gameplay
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `html:dist`: compiles GWT sources. The compiled application can be found at `html/build/dist`: you can use any HTTP server to deploy it.
-- `html:superDev`: compiles GWT sources and runs the application in SuperDev mode. It will be available at [localhost:8080/html](http://localhost:8080/html). Use only during development.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+O jogo começa com uma história que contextualiza o enredo, explicando o rapto dos amigos de Aya e sua missão de resgatá-los. Em seguida, o jogador é levado a um mapa com cinco pontos turísticos marcados. Aya deve visitar cada um desses locais para responder a quizzes sobre curiosidades dos lugares.
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+### Locais do Jogo
 
-### **História: Aya e o Resgate dos Gatinhos**
-
-**Aya** é uma gatinha aventureira que vive em uma cidade repleta de belos pontos turísticos. Certo dia, ao explorar o bairro, ela percebe algo estranho: seus amigos gatinhos estão desaparecendo um a um. Depois de investigar, ela descobre o culpado: **Spike,** um cachorro ressentido que acredita que os gatos estão roubando toda a atenção e carinho que antes eram dele.
-
-**Spike** fazia parte de uma família que tinha tanto ele quanto um gato. Com o tempo, ele começou a sentir que o gato recebia mais atenção da família. Consumido por ciúmes e mágoa, Spike decidiu se vingar não apenas daquele gato, mas de todos os gatos da cidade. Ele os capturou e os prendeu nos pontos turísticos, tornando cada local um "desafio" para qualquer um que tentasse resgatá-los.
-
-Agora, **Aya** precisa usar sua inteligência e coragem para libertar os gatinhos e mostrar a **Spike** que atenção e amor não precisam ser exclusivos.
-
----
-
-### **Estrutura da Narrativa**
-
-### **1. Os Pontos Turísticos**
-
-Aya descobre que Spike prendeu os gatos em quatro locais famosos da cidade:
-
-- **Geoparque Quarta Colônia**
-- **Jardim Botânico da UFSM**
 - **Vila Belga**
 - **Catedral Metropolitana de Santa Maria**
+- **Estação Ferroviária Gare**
+- **Jardim Botânico**
+- **Local Misterioso:** Spike, o vilão, testa os conhecimentos do jogador sobre a cidade.
 
-Cada local tem um desafio, como quizzes ou puzzles temáticos, que Aya precisa resolver para libertar os gatinhos.
+### Mecânicas
 
-### **2. O Esconderijo de Spike**
+- **Quizzes:** Cada ponto turístico apresenta um quiz único e relacionado ao local.
+- **Resgate dos Gatinhos:** Os amigos de Aya são resgatados ao longo do trajeto, após completar os quizzes.
+- **Sistema de Vidas:** O jogador possui cinco vidas, correspondendo ao limite de respostas erradas acumuladas durante todo o jogo.
+- **Missões:** Há uma aba de missões que ajuda o jogador a acompanhar seu progresso.
 
-Após libertar os gatinhos, Aya segue a trilha de Spike até seu esconderijo. Lá, ela enfrenta o vilão em um desafio final: um mix de perguntas e puzzles que testam tudo o que Aya aprendeu sobre os pontos turísticos.
+### Conclusão
 
-### **3. O Desfecho**
+O jogo termina após resolver o último quiz no local misterioso, levando à tela final de resolução.
 
-Após vencer o desafio, Aya confronta Spike. Ele finalmente admite que se sentia deixado de lado e só queria ser notado novamente. Aya o convence de que carinho e atenção podem ser compartilhados e que ele pode se redimir ajudando a proteger os pontos turísticos e os gatinhos.
+## Processo de Desenvolvimento
 
-Spike, arrependido, liberta os gatinhos restantes e promete ser um protetor da cidade, trabalhando ao lado de **Aya** para torná-la ainda mais especial.
+No início, a ideia era simples: um jogo de perguntas e respostas ambientado em Santa Maria. No entanto, à medida que o projeto avançava, percebemos a necessidade de criar uma narrativa mais envolvente. Foi assim que a história da Aya e seus amigos surgiu, dando vida ao nosso jogo. Um dos maiores desafios foi a criação dos gráficos. Passamos horas pesquisando referências e ajustando cada pixel para que as telas ficassem com a aparência que desejávamos. Outro desafio foi a programação dos quizzes. Queríamos que as perguntas fossem desafiadoras, mas ao mesmo tempo divertidas e educativas. Para isso, realizamos diversas pesquisas sobre os pontos turísticos da cidade e elaboramos perguntas que pudessem despertar a curiosidade dos jogadores. A tela foi um verdadeiro quebra-cabeça! Achar os pixels certos foi incrivelmente difícil. Tivemos várias ideias, testamos todas elas, e resolvemos muitos problemas até chegarmos ao resultado que queríamos. Sem dúvida, ajustar a tela foi a parte mais desafiadora, onde por exemplo, ao entrar em cada quiz a tela de fundo fica preta (executando na web), omitindo os ícones de vida do player. Fora os ajustes de tela, aprender a utilizar as partes básicas da libGDX não foi um desafio muito grande e com tempo conseguimos nos ambientar e começar a colocar em prática nossas ideias.
+
+## Diagrama de Classes
+
+![image.png]([https://prod-files-secure.s3.us-west-2.amazonaws.com/b361a0b2-c7a8-459a-bb06-dd7edd246d8e/9a6342fe-920d-4f02-b096-76737527ac25/image.png](https://img.notionusercontent.com/s3/prod-files-secure%2Fb361a0b2-c7a8-459a-bb06-dd7edd246d8e%2F9a6342fe-920d-4f02-b096-76737527ac25%2Fimage.png/size/w=2000?exp=1733971525&sig=HIsd0wgkGp6JJ28S0E44YNuwsXbZBzeIWl7cC0nxJmg))
+
+## Referências
+
+- Recursos utilizados no desenvolvimento:
+    - http://www.santamariaturismo.com.br/index.php/pt/
+    - https://dribbble.com/zamax
+    - https://www.youtube.com/watch?v=2bmvlwvnirk
+    - https://libgdx.com/wiki/
+    - https://www.tabnews.com.br/kaicsalomao/entenda-o-basico-sobre-libgdx-e-criacao-de-jogos-em-java
+    - https://jmakegames.itch.io/little-city
+
+## Contato
+
+- Leonardo Dallanora: [leonardo.dallanora@gmail.com]
+- Luiza Manoelle: [luizamanoelle@hotmail.com]
 
 ---
 
-### **Gameplay**
-
-1. **Exploração:**
-    
-    Aya percorre o mapa, indo de um ponto turístico ao outro, com uma trilha pontilhada indicando seu caminho.
-    
-2. **Quizzes/Puzzles:**
-    
-    Cada local contém um quiz ou puzzle relacionado ao tema do ponto turístico. Por exemplo:
-    
-    - No Jardim Botânico, Aya pode ter que identificar tipos de plantas ou flores.
-    - Na Vila Belga, um puzzle de formas e cores para libertar um gatinho.
-3. **Confronto Final:**
-    
-    O desafio final no esconderijo de Spike é uma combinação de perguntas temáticas e um puzzle mais elaborado, com um tempo limite para completar.
-    
-4. **Recompensa:**
-    
-    Ao resgatar todos os gatinhos, Aya recebe a gratidão deles, e Spike se redime, prometendo nunca mais agir por ciúmes.
+Este jogo foi desenvolvido como parte da disciplina de Paradigmas de Programação para a formação em Sistemas de Informação na UFSM.
